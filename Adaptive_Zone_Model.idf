@@ -1,0 +1,91 @@
+!- EnergyPlus IDF Generated directly from AI Parametric Prototype
+!- Format: EnergyPlus V9.5+
+Version, 9.5;
+
+Building,
+  AdaptiveZoneBuilding,  !- Name
+  0.0,                   !- North Axis {deg}
+  City,                  !- Terrain
+  0.04,                  !- Loads Convergence Tolerance Value
+  0.4,                   !- Temperature Convergence Tolerance Value {deltaC}
+  FullExterior,          !- Solar Distribution
+  25,                    !- Maximum Number of Warmup Days
+  6;                     !- Minimum Number of Warmup Days
+
+Zone,
+  Main_Thermal_Zone,     !- Name
+  0,                     !- Direction of Relative North {deg}
+  0, 0, 0,               !- X,Y,Z {m}
+  1,                     !- Type
+  1,                     !- Multiplier
+  autocalculate,         !- Ceiling Height {m}
+  autocalculate;         !- Volume {m3}
+
+!- --- SURFACES (幾何頂點定義) ---
+BuildingSurface:Detailed,
+  Floor_Surface,         !- Name
+  Floor,                 !- Surface Type
+  Generic_Ground_Slab,   !- Construction Name
+  Main_Thermal_Zone,     !- Zone Name
+  Ground,                !- Outside Boundary Condition
+  ,                      !- Outside Boundary Condition Object
+  NoSun,                 !- Sun Exposure
+  NoWind,                !- Wind Exposure
+  0.0,                   !- View Factor to Ground
+  4,                     !- Number of Vertices
+  -3.00, -4.00, 0.0,
+  3.00, -4.00, 0.0,
+  3.00, 4.00, 0.0,
+  -3.00, 4.00, 0.0;
+
+BuildingSurface:Detailed,
+  Roof_Surface,          !- Name
+  Roof,                  !- Surface Type
+  Generic_Roof,          !- Construction Name
+  Main_Thermal_Zone,     !- Zone Name
+  Outdoors,              !- Outside Boundary Condition
+  ,                      !- Outside Boundary Condition Object
+  SunExposed,            !- Sun Exposure
+  WindExposed,           !- Wind Exposure
+  0.0,                   !- View Factor to Ground
+  4,                     !- Number of Vertices
+  -3.00, 4.00, 3.50,
+  3.00, 4.00, 3.50,
+  3.00, -4.00, 3.50,
+  -3.00, -4.00, 3.50;
+
+BuildingSurface:Detailed,
+  South_Facade_Wall,     !- Name
+  Wall,                  !- Surface Type
+  Generic_Exterior_Wall, !- Construction Name
+  Main_Thermal_Zone,     !- Zone Name
+  Outdoors,              !- Outside Boundary Condition
+  ,                      !- Outside Boundary Condition Object
+  SunExposed,            !- Sun Exposure
+  WindExposed,           !- Wind Exposure
+  0.5,                   !- View Factor to Ground
+  4,                     !- Number of Vertices
+  -3.00, 4.00, 0.0,
+  3.00, 4.00, 0.0,
+  3.00, 4.00, 3.50,
+  -3.00, 4.00, 3.50;
+
+!- 南向大面積開口 (Fenestration)
+FenestrationSurface:Detailed,
+  South_Window,          !- Name
+  Window,                !- Surface Type
+  Generic_Double_Glass,  !- Construction Name
+  South_Facade_Wall,     !- Building Surface Name
+  ,                      !- Outside Boundary Condition Object
+  0.5,                   !- View Factor to Ground
+  ,                      !- Frame and Divider Name
+  1.0,                   !- Multiplier
+  4,                     !- Number of Vertices
+  -2.70, 4.00, 0.5,
+  2.70, 4.00, 0.5,
+  2.70, 4.00, 3.20,
+  -2.70, 4.00, 3.20;
+
+!- 輸出熱舒適度變數 (PMV / PPD)
+Output:Variable, *, Zone Thermal Comfort Fanger Model PMV, hourly;
+Output:Variable, *, Zone Mean Air Temperature, hourly;
